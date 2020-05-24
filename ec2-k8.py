@@ -1,4 +1,4 @@
-#!/root/aws-ansible/ansible/bin/python
+#!/root/kubernates-ansible-aws/ansible/bin/python
 import boto3
 import json
 import pprint
@@ -18,14 +18,16 @@ def main():
    all_groups={
 	            'master': {
 			'hosts': master_group,
-			'var': {
-			     'group_name': 'k8-master'
+			'vars': {
+			     'group_name': 'k8-master',
+                             'ansible_user': 'ubuntu'
                                }
 			},
 		    'worker': {
 			'hosts': worker_group,
-			'var': {
-			     'group_name': 'k8-node'
+			'vars': {
+			     'group_name': 'k8-node',
+                             'ansible_user': 'ubuntu'
                                }
 			}
      	      }
