@@ -28,7 +28,7 @@ ansible -i ec2-k8.py worker --list | grep -v hosts > files/hosts
 ansible -i ec2-k8.py master --list | grep -v hosts >> files/hosts 
 
 # 6. update kube-api-server variable in playbooks
-export KUBE_API_SERVER_IP = `ansible -i ec2-k8.py  master --list | grep -v hosts | head -1 | awk '{print $1}'  > main_master_ip`
+export KUBE_API_SERVER_IP = `ansible -i ec2-k8.py  master --list | grep -v hosts | head -1 | awk '{print $1}'`
 sed -ir "s/kube_api_server: ChangeMe/kube_api_server: ${KUBE_API_SERVER_IP}/g" deploy-k8-ubuntu.yml 
 sed -ir "s/kube_api_server: ChangeMe/kube_api_server: ${KUBE_API_SERVER_IP}/g" add-node-ubuntu.yml 
 
