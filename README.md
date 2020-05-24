@@ -3,40 +3,49 @@ This repo installs 3 node Kubernetes cluster on AWS with 1 master and 2 worker
 
 # Steps to run this repo
 
-# Install the pre-requistes 
-1. ./packages.sh
+# 1.Install the pre-requistes 
+./packages.sh
 
-# setup python virual env 
-2.python3 -m venv ansible
-3.source /root/aws-ansible/ansible/bin/activate
-4. pip install pip --upgrade
-5. pip install boto
-6. pip install boto3
-7. pip install ansible
+# 2. setup python virual env 
+python3 -m venv ansible
+source /root/aws-ansible/ansible/bin/activate
+pip install pip --upgrade
+pip install boto
+pip install boto3
+pip install ansible
 
-# Configure AWS credential - this is needed for dynamic inventory 
-8. aws configure
+# 3. Configure AWS credential - this is needed for dynamic inventory 
+aws configure 
+OR
+EXPORT AWS_KEY_ID = XXXXXXXXXXXXX
+EXPORT AWS_SECRET_KEY =XXXXXXXXXX
 
-# Run create Infra for launch master and worked node
-9. ansible-playbook -i inventory  create-infra.yml
+# 4. Run create Infra for launch master and worked node
+ansible-playbook -i inventory  create-infra.yml
 
-# 10 .prepare host file from dynamic inventory . update the alias name
+# 5. prepare host file from dynamic inventory . Update the alias name
 ansible -i ec2-k8.py worker --list | grep -v hosts > files/hosts 
 ansible -i ec2-k8.py master --list | grep -v hosts >> files/hosts 
 
-# 11. fetch private key on ansible controller
+# 6. update kube-api-server variable in playbooks
+export KUBE_API_SERVER_IP = `ansible -i ec2-k8.py  master --list | grep -v hosts | head -1 | awk '{print $1}'  > main_master_ip`
+sed -ir "s/kube_api_server: ChangeMe/kube_api_server: ${KUBE_API_SERVER_IP}/g" deploy-k8-ubuntu.yml 
+sed -ir "s/kube_api_server: ChangeMe/kube_api_server: ${KUBE_API_SERVER_IP}/g" add-node-ubuntu.yml 
 
-# 12. Update new hosts in playbooks
+
+# 7. fetch private key on ansible controller
+
+# 8. Update new hosts in playbooks
 cat files/hosts  >> distribute-key.yml 
 
-# 13 Disribute key on remote hosts
+# 10 Disribute key on remote hosts
 ansible-playbook -i inventory  distribute-key.yml 
 
-# 14. Check ansible ping for all host
+# 11. Check ansible ping for all host
 ansible -m ping -i ec2-k8.py master
 ansible -m ping -i ec2-k8.py worker
 
-# 15. Prepare host for k8 deployment
+# 12. Prepare host for k8 deployment
 ansible-playbook -i ec2-k8.py  configue-ubuntu-infra.yml 
 
-# 16. 
+# 13. 
