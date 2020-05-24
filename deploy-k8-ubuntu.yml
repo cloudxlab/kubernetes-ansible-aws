@@ -8,7 +8,7 @@
   tasks:
     - name: Initialise k8 cluster
       shell:
-        cmd: kubeadm init --apiserver-advertise-address={{ kube_api_ip }} --kubernetes-version stable-1.18 --ignore-preflight-errors=NumCPU
+        cmd: kubeadm init --apiserver-advertise-address={{ kube_api_server }} --kubernetes-version stable-1.18 --ignore-preflight-errors=NumCPU
 
     - name: Setup kube config
       shell:
