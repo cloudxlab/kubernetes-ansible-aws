@@ -6,7 +6,7 @@ echo "==================================================="
 echo "RUN below command manually"
 echo "==================================================="
 echo python3 -m venv ansible
-echo source ~/aws-ansible/ansible/bin/activate
+echo source ~/kubernates-ansible-aws/ansible/bin/activate
 echo pip install pip --upgrade
 echo pip install boto
 echo pip install boto3
