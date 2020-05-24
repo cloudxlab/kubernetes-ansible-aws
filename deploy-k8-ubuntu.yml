@@ -3,7 +3,7 @@
   gather_facts: False
   become: true
   vars:
-    kube_api_ip: ChangeMe
+    kube_api_server: ChangeMe
   hosts: master
   tasks:
     - name: Initialise k8 cluster
