@@ -12,6 +12,6 @@
       shell:
         cmd: cat ~/.ssh/id_rsa.pub | ssh -i aws-key.pem {{ user }}@{{ item }} "cat >> ~/.ssh/authorized_keys"
       with_items:
-       - 172.31.38.218
-       - 172.31.34.222
-       - 172.31.34.5
+       - ChangeMe
+       - ChangeMe
+       - ChangeMe
