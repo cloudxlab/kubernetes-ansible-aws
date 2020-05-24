@@ -1,0 +1,74 @@
+---
+- name: Configure all nodes
+  hosts: master
+  gather_facts: False
+  become: true
+  tasks:
+    - name: Install docker
+      yum: name=docker state=latest
+    - name: Start docker service
+      service: name=docker state=started
+    - name: Enable service docker , and not touch the state
+      service: name=docker enabled=yes
+    - name: Configure K8 Repo
+      copy:
+        src: files/kubernetes.repo
+        dest: /etc/yum.repos.d/kubernetes.repo
+    - name: Install kubelet
+      yum: name=kubelet state=latest
+    - name: Install kubeadm
+      yum: name=kubeadm state=latest
+    - name: Install kubectl
+      yum: name=kubectl state=latest
+    - name: Start kubelet service
+      service: name=kubelet state=started
+    - name: Enable service kubelet, and not touch the state
+      service: name=kubelet enabled=yes
+    - name: Set Hostname on Nodes
+      shell:
+        cmd: sudo hostnamectl set-hostname "{{ group_name}}"-master
+    - name: Update  hosts file
+      copy:
+        src: files/hosts
+        dest: /etc/hosts
+
+    - name: update firewall port 6443/tcp 
+      shell:
+        cmd: sudo firewall-cmd --permanent --add-port=6443/tcp
+    - name: update firewall port 2370-2380/tcp 
+      shell:
+        cmd: sudo firewall-cmd --permanent --add-port=2379-2380/tcp
+    - name: update firewall port 10250/tcp 
+      shell:
+        cmd: sudo firewall-cmd --permanent --add-port=10250-10252/tcp
+    - name: update firewall port 10255/tcp 
+      shell:
+        cmd: sudo firewall-cmd --permanent --add-port=10255/tcp
+    - name: reload firewall
+      shell:
+        cmd: sudo firewall-cmd –-reload
+
+#    - name: Configure iptables
+#      vars:
+#	sysctl_file_path: /etc/sysctl.conf
+#      sysctl:
+#          name: "{{ item }}"
+#          state: present
+#          sysctl_file: "{{ sysctl_file_path }}"
+#          value: "1"
+#          reload: yes
+#      when: sysctl_bridge_nf_call_iptables.rc == 0
+#      with_items:
+#          - net.bridge.bridge-nf-call-iptables
+#          - net.bridge.bridge-nf-call-arptables
+#          - net.bridge.bridge-nf-call-ip6tables
+
+
+    - name: Disable SE Linux
+      shell:
+        cmd: setenforce 0;sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+
+    - name: Disable SWAP
+      shell:
+        cmd: sed -i '/swap/d' /etc/fstab;swapoff -a
+

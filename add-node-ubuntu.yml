@@ -1,0 +1,14 @@
+---
+- name: Add node
+  gather_facts: False
+  become: true
+  vars:
+    kube_api_ip: 172.31.38.218
+    token: ifqvch.sa83sdhs9euneqda
+    disc_token: sha256:c8c01b1426c5913ab6dbfd99c12cad6d6a4b5f89018b851102f85151d96e832d
+  hosts: worker
+  tasks:
+    - name: join k8-cluster
+      shell:
+        cmd: kubeadm join {{ kube_api_ip }}:6443 --token {{ token }} --discovery-token-ca-cert-hash {{ disc_token }}
+

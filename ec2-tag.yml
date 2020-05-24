@@ -1,0 +1,14 @@
+---
+- name: Tag EC2 instance
+  hosts: localhost 
+  gather_facts: False
+  tasks:
+    - name: tag  EC2 instance
+      ec2_tag:
+         region: eu-west-2
+         resource: i-0cc17e0a04ef47c51
+         state: present
+         tags:
+           Name: ubervol
+           env: prod
+

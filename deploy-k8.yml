@@ -1,0 +1,17 @@
+---
+- name: Deploy k8 cluster
+  gather_facts: False
+  become: true
+  hosts: master
+  tasks:
+    - name: Set up Pod Network
+      shell:
+        cmd: sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+    - name: Create Cluster with kubeadm
+      shell:
+        cmd: kubeadm init –pod-network-cidr=10.244.0.0/16
+
+    - name: Check Status of Cluster
+      shell:
+        cmd: kubectl get pods --all-namespaces
+
