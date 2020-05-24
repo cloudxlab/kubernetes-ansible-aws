@@ -43,6 +43,6 @@
       copy:
         src: files/hosts
         dest: /etc/hosts
-    - name: Disable SWAP
-      shell:
-        cmd: sudo swapoff -v /swapfile
+#    - name: Disable SWAP
+#      shell:
+#        cmd: sudo swapoff -v /swapfile
