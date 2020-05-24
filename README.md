@@ -48,4 +48,18 @@ ansible -m ping -i ec2-k8.py worker
 # 12. Prepare host for k8 deployment
 ansible-playbook -i ec2-k8.py  configue-ubuntu-infra.yml 
 
-# 13. 
+# 13. Deploy k8 cluster on master
+ansible-playbook -v -i ec2-k8.py deploy-k8-ubuntu.yml 
+
+# 14. Check Master is up and running ok
+ansible -m shell -a "kubectl get no" -i ec2-k8.py master --become
+
+# 15. Update token and discovery token in add-node playbook
+
+
+# 16. Run Add node playbook
+ansible-playbook -v -i ec2-k8.py
+
+# 17. Check Node is added successfully
+ansible -m shell -a "kubectl get no" -i ec2-k8.py master --become
+ansible -m shell -a "kubectl get po --all-namespaces" -i ec2-k8.py master --become
