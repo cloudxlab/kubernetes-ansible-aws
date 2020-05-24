@@ -3,12 +3,12 @@
   gather_facts: False
   become: true
   vars:
-    kube_api_ip: ChangeMe
+    kube_api_server: ChangeMe
     token: ChangeMe
     disc_token: ChangeMe
   hosts: worker
   tasks:
     - name: join k8-cluster
       shell:
-        cmd: kubeadm join {{ kube_api_ip }}:6443 --token {{ token }} --discovery-token-ca-cert-hash {{ disc_token }}
+        cmd: kubeadm join {{ kube_api_server }}:6443 --token {{ token }} --discovery-token-ca-cert-hash {{ disc_token }}
 
