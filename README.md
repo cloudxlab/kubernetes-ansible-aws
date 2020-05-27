@@ -9,7 +9,7 @@ This repo installs 3 node Kubernetes cluster on AWS with 1 master and 2 worker
 # 2. setup python virual env and activate it
 python3 -m venv ansible
 
-source /root/aws-ansible/ansible/bin/activate
+source /root/kubernates-ansible-aws/ansible/bin/activate
 
 # 3 Install requirements 
 
