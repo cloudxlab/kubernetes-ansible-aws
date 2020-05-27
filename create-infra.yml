@@ -3,7 +3,7 @@
   hosts: localhost
   gather_facts: False
   vars:
-    keypair: aws-key
+    keypair: devops
     instance_type: t2.micro
     security_group: default
 #    Ubuntu ami-0eb89db7593b5d434 
@@ -12,12 +12,11 @@
     region: eu-west-2
     subnet: subnet-082213e51ccfdcaa4 
   tasks:
-   - name: Generate key
-     shell:
-         cmd: ssh-keygen -q -t rsa -N '' -f ~/.ssh/id_rsa 2>/dev/null <<< y >/dev/null 
-
-
-   - name: create key pair using key_material obtained using 'file' lookup plugin
+    - name: Generate key
+      shell:
+        cmd: ssh-keygen -q -t rsa -N '' -f ~/.ssh/id_rsa 2>/dev/null <<< y >/dev/null 
+        
+    - name: create key pair using key_material obtained using 'file' lookup plugin
       ec2_key:
          name: devops
          key_material: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
