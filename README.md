@@ -6,18 +6,16 @@ This repo installs 3 node Kubernetes cluster on AWS with 1 master and 2 worker
 # 1.Install the pre-requistes 
 ./packages.sh
 
-# 2. setup python virual env 
+# 2. setup python virual env and activate it
 python3 -m venv ansible
 
 source /root/aws-ansible/ansible/bin/activate
 
+# 3 Install requirements 
+
 pip install pip --upgrade
 
-pip install boto
-
-pip install boto3
-
-pip install ansible
+pip install -r requirements.txt
 
 
 # 3. Configure AWS credential - this is needed for dynamic inventory 
@@ -31,23 +29,32 @@ EXPORT AWS_SECRET_KEY =XXXXXXXXXX
 ansible-playbook -i inventory  create-infra.yml
 
 # 5. prepare host file from dynamic inventory . Update the alias name
-ansible -i ec2-k8.py worker --list | grep -v hosts > files/hosts 
+ansible -i ec2-k8.py worker --list | grep -v hosts | awk '{print $1 "   worker"}' > files/hosts 
 
-ansible -i ec2-k8.py master --list | grep -v hosts >> files/hosts 
+ansible -i ec2-k8.py master --list | grep -v hosts | awk '{print $1 "   master"}' >> files/hosts 
+
+# 6. Update new hosts in playbooks
+Update host in distribute key playbook
+
+ansible -i ec2-k8.py  master --list | grep -v hosts | head -1 | awk '{print "       - "$1}' >> distribute-key.yml
+
+ansible -i ec2-k8.py  worker --list | grep -v hosts | head -1 | awk '{print "       - "$1}' >> distribute-key.yml
+
+# 10 Disribute key on remote hosts
+ansible-playbook -i inventory  distribute-key.yml 
 
 # 6. update kube-api-server variable in playbooks
+
 export KUBE_API_SERVER_IP=`ansible -i ec2-k8.py  master --list | grep -v hosts | head -1 | awk '{print $1}'`
+
 sed -ir "s/kube_api_server: ChangeMe/kube_api_server: ${KUBE_API_SERVER_IP}/g" deploy-k8-ubuntu.yml 
+
 sed -ir "s/kube_api_server: ChangeMe/kube_api_server: ${KUBE_API_SERVER_IP}/g" add-node-ubuntu.yml 
 
 
 # 7. fetch private key on ansible controller
 
-# 8. Update new hosts in playbooks
-cat files/hosts  >> distribute-key.yml 
 
-# 10 Disribute key on remote hosts
-ansible-playbook -i inventory  distribute-key.yml 
 
 # 11. Check ansible ping for all host
 ansible -m ping -i ec2-k8.py master
