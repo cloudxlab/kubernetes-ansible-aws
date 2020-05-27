@@ -4,11 +4,7 @@
     user: ubuntu
   hosts: localhost
   tasks:
-    - name: Generate key
-      shell:
-        cmd: ssh-keygen -q -t rsa -N '' -f ~/.ssh/id_rsa 2>/dev/null <<< y >/dev/null 
-
     - name: Distribute key
       shell:
-        cmd: cat ~/.ssh/id_rsa.pub | ssh -i aws-key.pem {{ user }}@{{ item }} "cat >> ~/.ssh/authorized_keys"
+        cmd: cat ~/.ssh/id_rsa.pub | ssh -i ~/.ssh/id_rsa {{ user }}@{{ item }} "cat >> ~/.ssh/authorized_keys"
       with_items:
