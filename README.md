@@ -95,3 +95,5 @@ kubernetes   ClusterIP   10.96.0.1      <none>        443/TCP          24m
 my-service   NodePort    10.103.39.41   <none>        4080:32093/TCP   13s
   
 #21 Access pod at http://public_ip_of_node:32093
+
+http://3.10.213.230:32093
