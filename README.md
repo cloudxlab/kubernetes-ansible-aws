@@ -80,3 +80,18 @@ ansible -m shell -a "kubectl get no" -i ec2-k8.py master --become
 
 ansible -m shell -a "kubectl get po --all-namespaces" -i ec2-k8.py master --become
 
+
+18# Run the flask-app pod 
+
+kubectl apply -f flask-app.yml
+
+#19 Expose Nodeport for service access
+
+kubectl expose deployment flask-app --port=4080 --protocol=TCP --type=NodePort --name=my-service
+
+#20 root@k8-master-2:~# kubectl get svc 
+NAME         TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+kubernetes   ClusterIP   10.96.0.1      <none>        443/TCP          24m
+my-service   NodePort    10.103.39.41   <none>        4080:32093/TCP   13s
+  
+#21 Access pod at http://public_ip_of_node:32093
