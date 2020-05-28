@@ -18,32 +18,32 @@ pip install pip --upgrade
 pip install -r requirements.txt
 
 
-# 3. Configure AWS credential - this is needed for dynamic inventory 
+# 4. Configure AWS credential - this is needed for dynamic inventory 
 aws configure 
 OR
 EXPORT AWS_KEY_ID = XXXXXXXXXXXXX
 
 EXPORT AWS_SECRET_KEY =XXXXXXXXXX
 
-# 4. Run create Infra for launch master and worked node
+# 5. Run create Infra for launch master and worked node
 ansible-playbook -i inventory  create-infra.yml
 
-# 5. prepare host file from dynamic inventory . Update the alias name
+# 6. prepare host file from dynamic inventory . Update the alias name
 ansible -i ec2-k8.py worker --list | grep -v hosts | awk '{print $1 "   worker"}' > files/hosts 
 
 ansible -i ec2-k8.py master --list | grep -v hosts | awk '{print $1 "   master"}' >> files/hosts 
 
-# 6. Update new hosts in playbooks
+# 7. Update new hosts in playbooks
 Update host in distribute key playbook
 
 ansible -i ec2-k8.py  master --list | grep -v hosts | head -1 | awk '{print "       - "$1}' >> distribute-key.yml
 
 ansible -i ec2-k8.py  worker --list | grep -v hosts | head -1 | awk '{print "       - "$1}' >> distribute-key.yml
 
-# 10 Disribute key on remote hosts
+# 8 Disribute key on remote hosts
 ansible-playbook -i inventory  distribute-key.yml 
 
-# 6. update kube-api-server variable in playbooks
+# 9. update kube-api-server variable in playbooks
 
 export KUBE_API_SERVER_IP=`ansible -i ec2-k8.py  master --list | grep -v hosts | head -1 | awk '{print $1}'`
 
@@ -51,17 +51,12 @@ sed -ir "s/kube_api_server: ChangeMe/kube_api_server: ${KUBE_API_SERVER_IP}/g" d
 
 sed -ir "s/kube_api_server: ChangeMe/kube_api_server: ${KUBE_API_SERVER_IP}/g" add-node-ubuntu.yml 
 
-
-# 7. fetch private key on ansible controller
-
-
-
-# 11. Check ansible ping for all host
+# 10. Check ansible ping for all host
 ansible -m ping -i ec2-k8.py master
 
 ansible -m ping -i ec2-k8.py worker
 
-# 12. Prepare host for k8 deployment
+# 11. Prepare host for k8 deployment
 ansible-playbook -i ec2-k8.py  configue-ubuntu-infra.yml 
 
 
@@ -77,7 +72,8 @@ ansible -m shell -a "kubectl get no" -i ec2-k8.py master --become
 
 
 # 16. Run Add node playbook
-ansible-playbook -v -i ec2-k8.py
+ansible-playbook -v -i ec2-k8.py  add-node-ubuntu.yml 
+
 
 # 17. Check Node is added successfully
 ansible -m shell -a "kubectl get no" -i ec2-k8.py master --become
