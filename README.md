@@ -95,6 +95,10 @@ NAME         TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
 kubernetes   ClusterIP   10.96.0.1      <none>        443/TCP          24m
 my-service   NodePort    10.103.39.41   <none>        4080:32093/TCP   13s
   
-# 21 Access pod at http://public_ip_of_node:<service_port>
+# 21 Access service at 
+http://<public_ip_of_node>:<service_port>
+
+If you dont want public ip on worker node. configure the node behind the load balancer. 
+
 
 
