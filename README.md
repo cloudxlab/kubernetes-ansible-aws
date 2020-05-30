@@ -90,7 +90,7 @@ kubectl apply -f flask-app.yml
 kubectl expose deployment flask-app --port=4080 --protocol=TCP --type=NodePort --name=my-service
 
 # 20 Get the service port exposed 
-root@k8-master-2:~# kubectl get svc 
+kubectl get svc 
 NAME         TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
 kubernetes   ClusterIP   10.96.0.1      <none>        443/TCP          24m
 my-service   NodePort    10.103.39.41   <none>        4080:32093/TCP   13s
