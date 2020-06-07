@@ -14,12 +14,12 @@
   tasks:
     - name: Generate key
       shell:
-        cmd: ssh-keygen -q -t rsa -N '' -f ~/.ssh/id_rsa 2>/dev/null <<< y >/dev/null 
+        cmd: ssh-keygen -q -t rsa -N '' -f devops.pem 2>/dev/null <<< y >/dev/null 
         
     - name: create key pair using key_material obtained using 'file' lookup plugin
       ec2_key:
          name: devops
-         key_material: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+         key_material: "{{ lookup('file', 'devops.pub') }}"
     - name: Launch master instance
       ec2:
          count: 1 
