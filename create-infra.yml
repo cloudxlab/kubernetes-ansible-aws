@@ -14,7 +14,7 @@
   tasks:
     - name: Generate key
       shell:
-        cmd: ssh-keygen -q -t rsa -N '' -f devops.pem 2>/dev/null <<< y >/dev/null 
+        cmd: ssh-keygen -q -t rsa -N '' -f devops 2>/dev/null <<< y >/dev/null 
         
     - name: create key pair using key_material obtained using 'file' lookup plugin
       ec2_key:
