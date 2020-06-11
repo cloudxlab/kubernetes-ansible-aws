@@ -6,5 +6,5 @@
   tasks:
     - name: Distribute key
       shell:
-        cmd: cat ~/.ssh/id_rsa.pub | ssh -i ~/.ssh/id_rsa {{ user }}@{{ item }} "cat >> ~/.ssh/authorized_keys"
+        cmd: cat devops.pub | ssh -i devops {{ user }}@{{ item }} "cat >> ~/.ssh/authorized_keys"
       with_items:
