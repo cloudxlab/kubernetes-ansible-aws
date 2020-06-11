@@ -6,5 +6,5 @@
   tasks:
     - name: Distribute key
       shell:
-        cmd: cat devops.pub | ssh -i devops {{ user }}@{{ item }} "cat >> ~/.ssh/authorized_keys"
+        cmd: cat devops.pub | ssh -i devops -o "StrictHostKeyChecking = no" {{ user }}@{{ item }} "cat >> ~/.ssh/authorized_keys"
       with_items:
