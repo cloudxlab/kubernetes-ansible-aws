@@ -106,7 +106,7 @@ flask-ingress-virtual-host   nginx   v1.flask.app.com,v2.flask.app.com   172.31.
 Add entries for 2 hostnames into hosts file on the external machine.
 Entries will be like this:
 
-13.233.138.225 v1.flask.app.com
+13.233.138.225 v1.flask.app.com \
 13.127.76.200 v2.flask.app.com
 
 Open the brower on external machine and enter the url - v1.flask.app.com or v2.flask.app.com \
