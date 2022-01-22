@@ -82,18 +82,14 @@ controller:
 Set controller.service.externalIPs:\
 This is IP or IPs of master/workers nodes. Traffic from internet DNS will come to one of these IPs. You can put one or more depending on which nodes you want the external traffic come to first. From those hosts, traffic will be routed to other nodes and pods by kube-proxy. 
 
-Say:
-master has IP of XX.XX.XX.00 \
-worker 01 has IP of XX.XX.XX.11
+Say, master has IP of XX.XX.XX.00 and worker 01 has IP of XX.XX.XX.11. Then, in DNS server of AWS Route 53 or any other DNS provider, you will map your user-friendly website name to those IPs.
 
-Then, in DNS server of AWS Route 53 or any other DNS provider, you will map your user-friendly website name to those IPs.
-
-For example, mapping might be like below.
+For example, DNS server mapping might be like below.
 
 XX.XX.XX.00 www.learndevops.com \
 XX.XX.XX.11 www.app.learndevops.com
 
-To simukate the DNS server, we will add the entries to /etc/hosts or C:\Windows\System32\drivers\etc\hosts file.
+To simukate the DNS server, you can add the entries to /etc/hosts or C:\Windows\System32\drivers\etc\hosts file.
 
 ```console
 vi values.yaml
