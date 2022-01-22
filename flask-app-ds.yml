@@ -21,6 +21,6 @@ spec:
         effect: NoSchedule
       containers:
       - name: flask-app
-        image: manojkmgit/flaskapp:latest
+        image: ashok25/flaskapp:v1.0
         ports:
         - containerPort: 4080

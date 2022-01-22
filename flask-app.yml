@@ -1,9 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: flask-app-deployment
-  labels:
-    app: flask-app-dep-label
+  name: flask-dep
 spec:
   replicas: 2
   selector:
@@ -15,7 +13,7 @@ spec:
         app: flask-app
     spec:
       containers:
-      - image: manojkmhub/flaskapp:latest
-        name: flask-container
+      - image: ashok25/flaskapp:v1.0
+        name: flask-cont
         ports:
         - containerPort: 4080
