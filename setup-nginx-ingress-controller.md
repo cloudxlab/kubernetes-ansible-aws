@@ -1,5 +1,5 @@
 
-Set up Nginx Ingress Controller on bare-metal Kubernetes cluster using Helm 
+## Set up Nginx Ingress Controller on bare-metal Kubernetes cluster using Helm 
 
 There are 2 options to set up Nginx Ingress Controller:
 1. Using Manifest files
