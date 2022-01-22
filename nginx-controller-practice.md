@@ -54,7 +54,7 @@ It should open the sample app running inside the Kubernetes cluster.
 It shows multiple path ingress - one url serving mutiple paths which are serving different services or apps.
 
 We will start another deployment with version 2 of the app and one more service to serve the version 2 of the apps.
-```console`
+```console
 kubectl apply -f flask-app-v2.yml
 kubectl apply -f flask-svc-ingress-v2.yml
 kubectl get deploy
