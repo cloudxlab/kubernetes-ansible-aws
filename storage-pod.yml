@@ -4,7 +4,7 @@ metadata:
   name: storage-hosttype
 spec:
   containers:
-  - image: ashok25/flaskapp:v1.0
+  - image: manojkmhub/flaskapp:latest
     name: flask-app
     volumeMounts:
     - mountPath: /pod-data

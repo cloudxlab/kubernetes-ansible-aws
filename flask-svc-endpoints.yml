@@ -4,7 +4,7 @@ metadata:
   name: flask-svc
 subsets:
   - addresses:
-      - ip: 192.168.0.195
-      - ip: 192.168.0.198
+      - ip: 10.244.192.2
+      - ip: 10.244.64.1
     ports:
       - port: 4080
